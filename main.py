@@ -6,7 +6,7 @@ import numpy as np
 maxint = math.inf
 
 
-def maxSubArraySum(array):
+def max_subarray_sum(array):
     transformed_array = []
     for i in range(len(array) - 1):
         transformed_array.append(array[i + 1] - array[i])
@@ -16,7 +16,7 @@ def maxSubArraySum(array):
 
     for i in range(0, len(transformed_array)):
         max_ending_here = max_ending_here + transformed_array[i]
-        if (max_so_far < max_ending_here):
+        if max_so_far < max_ending_here:
             max_so_far = max_ending_here
 
         if max_ending_here < 0:
@@ -39,7 +39,8 @@ def random_list_generator(list_size, min_value, max_value):
 def find_maximum_subarray(number_array: list, low, high):
     # Bring error if array is empty
     if len(number_array) <= 0:
-        return "Not enough elements to compare"
+        print("Not enough elements to compare")
+        return 0, 0, 0
     else:
         if high == low:
             return low, high, number_array[low]
@@ -107,24 +108,26 @@ class MaxProfit:
     def find_maximum_values(self):
         # Bring error if array is empty
         if len(self.price_array) <= 0:
-            print("Not enough elements to return")
             return
         else:
 
             self.left_max = find_maximum_subarray(self.daily_change_list, self.low_index, self.mid_index)
+            print("chill")
             self.right_max = find_maximum_subarray(self.daily_change_list, self.mid_index + 1, self.high_index)
+            print("bro")
             self.cross_max = find_max_crossing_subarray(self.daily_change_list, self.low_index, self.mid_index,
                                                         self.high_index)
+            print(type(self.left_max), type(self.right_max), type(self.cross_max))
 
             tuple_list = sorted([self.left_max, self.right_max, self.cross_max], key=lambda x: x[2], reverse=True)
             self.best_choice = tuple_list[0]
 
             return
 
-    def find_max_profit(self):
-        return
-
     def print_list(self):
+        if len(self.price_array) <= 0:
+            print("Not enough elements to return")
+            return
 
         COLUMN_MAX_ELEMENTS = 25  # number of columns per line.
         current_index = 0
@@ -145,16 +148,17 @@ class MaxProfit:
 
 
 def main():
+    # sample test cases, edge cases included.
     a = [80, 120, 97, 60, 55, 102, 101, 54, 109, 64, 96, 69, 114, 110, 51, 56, 73, 72, 73, 67, 68, 54, 62, 82, 95, 94,
          88, 69, 113, 62, 90, 96, 63, 55, 50, 88, 52, 107, 87, 112, 80, 74, 116, 101, 104, 50, 88, 95, 71, 110, 74, 91,
          69, 110, 84, 103, 119, 74, 111, 94, 57, 83, 52, 107, 62, 92, 91, 69, 95, 73, 118, 79, 97, 86, 120, 97, 58, 103,
          112, 70, 120, 86, 90, 85, 113, 76, 107, 105, 55, 84, 73, 84, 89, 69, 107, 108, 68, 61, 75, 64]
     b = [100, 113, 110, 85, 105, 102, 86, 63, 81, 101, 94, 106, 101, 79, 94, 90, 97]
-    c = [7, 1, 5, 3, 6, 4]
+    c = [7]
     d = []
     e = random_list_generator(50, 50, 120)
     f = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 0]
-
+    test_options = [a, b, c, d, e, f]
     tests = []
 
     testcase_a = MaxProfit(a)
@@ -164,54 +168,36 @@ def main():
     testcase_e = MaxProfit(e)
     testcase_f = MaxProfit(f)
 
-    tests.append({'input': testcase_a.best_choice[2], 'output': maxSubArraySum(a)})
-    tests.append({'input': testcase_b.best_choice[2], 'output': maxSubArraySum(b)})
-    tests.append({'input': testcase_c.best_choice[2], 'output': maxSubArraySum(c)})
-    tests.append({'input': testcase_d.best_choice[2], 'output': maxSubArraySum(d)})
-    tests.append({'input': testcase_e.best_choice[2], 'output': maxSubArraySum(e)})
-    tests.append({'input': testcase_f.best_choice[2], 'output': maxSubArraySum(f)})
+    # extra function added to compare algorithm implemented.
+    tests.append({'input': testcase_a.best_choice[2], 'output': max_subarray_sum(a)})
+    tests.append({'input': testcase_b.best_choice[2], 'output': max_subarray_sum(b)})
+    tests.append({'input': testcase_c.best_choice[2], 'output': 0})  # only one day, so 0.
+    tests.append({'input': testcase_d.best_choice[2], 'output': 0})  # max_subarray_sum takes negative values, so 0.
+    tests.append({'input': testcase_e.best_choice[2], 'output': max_subarray_sum(e)})
+    tests.append({'input': testcase_f.best_choice[2], 'output': max_subarray_sum(f)})
 
     for i in range(len(tests)):
         print(f'Test {i + 1} Pass:',
               tests[i]['input'] == tests[i]['output'])
+    print("///////////////////////////////////////////////////////\n")
+    #
+    # custom_test_case = MaxProfit(f)
+    # if custom_test_case.valid_list:
+    #     custom_test_case.find_maximum_values()
+    #     custom_test_case.print_list()
+    #     if custom_test_case.best_choice[2] <= 0:
+    #         print("There is no best day to buy and sell :(.")
+    #     else:
+    #         print("The local left indexes are: " + str(custom_test_case.left_max))
+    #         print("The local left indexes are: " + str(custom_test_case.right_max))
+    #         print("The local left indexes are: " + str(custom_test_case.cross_max))
+    #         print("The best day to buy is day " + str(custom_test_case.best_choice[0] + 1)
+    #               + ", the best day to sell is day " + str(custom_test_case.best_choice[1])
+    #               + ". Total profit: " + str(custom_test_case.best_choice[2]) + ".")
+    #
+    # else:
+    #     print("Not enough elements in list.")
 
 
 if __name__ == '__main__':
     main()
-    # demo arrays
-
-    # a = [80, 120, 97, 60, 55, 102, 101, 54, 109, 64, 96, 69, 114, 110, 51, 56, 73, 72, 73, 67, 68, 54, 62, 82, 95, 94,
-    #      88, 69, 113, 62, 90, 96, 63, 55, 50, 88, 52, 107, 87, 112, 80, 74, 116, 101, 104, 50, 88, 95, 71, 110, 74, 91,
-    #      69, 110, 84, 103, 119, 74, 111, 94, 57, 83, 52, 107, 62, 92, 91, 69, 95, 73, 118, 79, 97, 86, 120, 97, 58, 103,
-    #      112, 70, 120, 86, 90, 85, 113, 76, 107, 105, 55, 84, 73, 84, 89, 69, 107, 108, 68, 61, 75, 64]
-    # b = [100, 113, 110, 85, 105, 102, 86, 63, 81, 101, 94, 106, 101, 79, 94, 90, 97]
-    # c = [7, 1, 5, 3, 6, 4]
-    # d = []
-    # e = random_list_generator(50, 50, 120)
-    # f = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 0]
-    #
-    #
-    #
-    # # print(b, len(b))
-    # answer = MaxProfit(e)
-    # if answer.valid_list:
-    #     answer.find_maximum_values()
-    #     answer.print_list()
-    #     if answer.best_choice[2] <= 0:
-    #         print("There is no best day to buy and sell :(.")
-    #     else:
-    #         print("The local left indexes are: " + str(answer.left_max))
-    #         print("The local left indexes are: " + str(answer.right_max))
-    #         print("The local left indexes are: " + str(answer.cross_max))
-    #         print("The best day to buy is day " + str(answer.best_choice[0] + 1) + ", the best day to sell is day "
-    #               + str(answer.best_choice[1]) + ". Total profit: " + str(answer.best_choice[2]) + ".")
-    #
-    # else:
-    #     print("Not enough elements in list.")
-    #
-    # z = []
-    #
-    #
-    # print(maxSubArraySum(e))
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
