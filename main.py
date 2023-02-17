@@ -11,10 +11,18 @@ print(
 print("                              School name: Texas A&M San Antonio")
 print("                                          Algorithms")
 print("                                          Assignment 2")
+print("                                          Submitted  February 16, 2023")
 print("                                 Semester/Year: Spring 2023")
 print(
     "================================================================================================================")
 print("")
+
+
+print("This program calculates the Max profit using the max contiguous subarray algorithm, a class was implemented\n"
+      "to address assignment specific requirements, the core functions are outside of the class scope. \n"
+      "A tester function has been added to testcase the assignment. Certain libraries were used\n"
+      "to improve assignment presentation and facilate certain tasks.\n"
+      "")
 
 
 # find maximum subarray implemented from pseudocode given.
